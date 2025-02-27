@@ -1,6 +1,7 @@
 from selene import browser, have, command, be, by
 
 from resource import resources
+from resource.users import User
 
 
 class RegistrationPage:
@@ -65,6 +66,22 @@ class RegistrationPage:
 
     def click_submit(self):
         browser.element('#submit').click()
+
+    def register(self, new_user: User):
+        self.fill_first_name(new_user.first_name)
+        self.fill_last_name(new_user.last_name)
+        self.fill_email(new_user.user_email)
+        self.select_gender(new_user.gender)
+        self.fill_phone(new_user.user_number)
+        self.fill_date_of_birth(new_user.month, new_user.year, new_user.day)
+        self.fill_subject(new_user.subjects)
+        self.select_hobbie(new_user.hobbies)
+        self.upload_picture(new_user.images)
+        self.fill_address(new_user.current_address)
+        self.fill_state(new_user.state)
+        self.fill_city(new_user.city)
+        self.click_submit()
+
 
     def should_registered_user_info_with(self, first_name, last_name, user_mail, user_male, user_phone,
                                          day, month, year, user_subjects, user_hobbies, user_photo, user_address,
