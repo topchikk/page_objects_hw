@@ -31,23 +31,25 @@ class RegistrationPage:
     def fill_email(self, email):
         browser.element('#userEmail').should(be.blank).type(email)
 
-    def select_gender(self, gender):
-        browser.element(f'[for="{gender}"]').click()
+    def select_gender(self, value):
+        browser.element('#genterWrapper').element(by.text(value)).click()
 
     def fill_phone(self, phone):
         browser.element('#userNumber').should(be.blank).type(phone)
 
-    def fill_date_of_birth(self, year, month, day):
-        browser.element('[id="dateOfBirthInput"]').perform(command.js.scroll_into_view).click()
-        browser.element('.react-datepicker__month-select').click().element(by.text(month)).click()
-        browser.element('.react-datepicker__year-select').click().element(by.text(year)).click()
-        browser.element(f'.react-datepicker__day--0{day}').click()
+    def fill_date_of_birth(self, mm, yyyy, dd):
+        browser.element('#dateOfBirthInput').click()
+        browser.element('.react-datepicker__month-select').click().element(by.text(mm)).click()
+        browser.element('.react-datepicker__year-select').click().element(by.text(yyyy)).click()
+        if len(dd) == 1:
+            dd = '0' + dd
+        browser.element(f'.react-datepicker__day--0{dd}').click()
 
-    def fill_subject(self, subject_1, subject_2):
-        browser.element('#subjectsInput').type(subject_1).press_enter().type(subject_2).press_enter()
+    def fill_subject(self, subject_1):
+        browser.element('#subjectsInput').type(subject_1).press_enter()
 
-    def select_hobbie(self, hobbie):
-        browser.element(f'[for="{hobbie}"]').click()
+    def select_hobbie(self, value):
+        browser.element('#hobbiesWrapper').element(by.text(value)).click()
 
     def upload_picture(self, file_name):
         browser.element('#uploadPicture').set_value(resources.resource_path(file_name))
@@ -74,7 +76,7 @@ class RegistrationPage:
         self.table_responsive.should(have.text(f'{user_mail}'))
         self.table_responsive.should(have.text(f'{user_male}'))
         self.table_responsive.should(have.text(f'{user_phone}'))
-        self.table_responsive.should(have.text(f'{day} {month} {year}'))
+        self.table_responsive.should(have.text(f'{day} {month},{year}'))
         self.table_responsive.should(have.text(f'{user_subjects}'))
         self.table_responsive.should(have.text(f'{user_hobbies}'))
         self.table_responsive.should(have.text(f'{user_photo}'))
